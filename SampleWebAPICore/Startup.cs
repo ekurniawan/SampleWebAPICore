@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using SampleWebAPICore.Models;
 using SampleWebAPICore.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 namespace SampleWebAPICore
 {
@@ -28,9 +29,11 @@ namespace SampleWebAPICore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PasienDataContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddMvc();
+                options => options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            
+            //untuk json tidak lowercase
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
