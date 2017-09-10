@@ -56,6 +56,58 @@ namespace SampleWebAPICore.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]Pasien pasien)
+        {
+            var result = await (from p in context.Pasien
+                         where p.PasienID == id
+                         select p).SingleOrDefaultAsync();
+
+            if (result != null)
+            {
+                try
+                {
+                    result.Nama = pasien.Nama;
+                    result.Alamat = pasien.Alamat;
+                    result.Umur = pasien.Umur;
+                    result.Telpon = pasien.Telpon;
+
+                    context.Pasien.Update(result);
+                    await context.SaveChangesAsync();
+                    return Ok("Berhasil mengupdate data");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest("Data tidak ditemukan");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await (from p in context.Pasien
+                         where p.PasienID == id
+                         select p).SingleOrDefaultAsync();
+
+            if (result != null)
+            {
+                try
+                {
+                    context.Pasien.Remove(result);
+                    await context.SaveChangesAsync();
+                    return Ok("Berhasil mendelete data");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+            return BadRequest("Data tidak ditemukan");
+        }
+
         /*[HttpGet]
         [Route("GetPasien")]
         public IEnumerable<Pasien> GetPasien()
