@@ -17,6 +17,11 @@ namespace SampleWebAPICore.Controllers
     {
         private readonly PasienDataContext context;
 
+        public PasienController(PasienDataContext context)
+        {
+            this.context = context;
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Pasien>> Get()
         {
