@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using SampleWebAPICore.Models;
+using SampleWebAPICore.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace SampleWebAPICore
 {
     public class Startup
@@ -23,6 +27,9 @@ namespace SampleWebAPICore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PasienDataContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
         }
 

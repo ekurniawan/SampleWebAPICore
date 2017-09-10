@@ -18,7 +18,7 @@ namespace SampleWebAPICore.Controllers
         [HttpGet]
         public IEnumerable<Pasien> Get()
         {
-            return lstPasien;
+            //return lstPasien;
         }
 
         /*[HttpGet]
