@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using SampleWebAPICore.Models;
+using SampleWebAPICore.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SampleWebAPICore.Controllers
 {
@@ -13,12 +15,16 @@ namespace SampleWebAPICore.Controllers
     [Route("api/Pasien")]
     public class PasienController : Controller
     {
-       
+        private readonly PasienDataContext context;
 
         [HttpGet]
-        public IEnumerable<Pasien> Get()
+        public async Task<IEnumerable<Pasien>> Get()
         {
-            //return lstPasien;
+            var results = from p in context.Pasien
+                          orderby p.Nama
+                          select p;
+
+            return await results.AsNoTracking().ToListAsync();
         }
 
         /*[HttpGet]
