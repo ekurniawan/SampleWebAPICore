@@ -32,6 +32,30 @@ namespace SampleWebAPICore.Controllers
             return await results.AsNoTracking().ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<Pasien> Get(int id)
+        {
+            var result = await (from p in context.Pasien
+                                where p.PasienID == id
+                                select p).AsNoTracking().SingleOrDefaultAsync();
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Pasien pasien)
+        {
+            try
+            {
+                context.Pasien.Add(pasien);
+                await context.SaveChangesAsync();
+                return Ok("Data berhasil ditambah");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         /*[HttpGet]
         [Route("GetPasien")]
         public IEnumerable<Pasien> GetPasien()
