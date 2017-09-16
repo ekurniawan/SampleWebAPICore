@@ -31,6 +31,20 @@ namespace SampleWebAPICore.Data
                 context.Pasien.Add(pasien);
             }
             context.SaveChanges();
+
+
+            var lstPengguna = new Pengguna[]
+            {
+                new Pengguna {Username="erick",Password=BCrypt.Net.BCrypt.HashPassword("erick")},
+                new Pengguna {Username="budi",Password=BCrypt.Net.BCrypt.HashPassword("budi")}
+            };
+
+            foreach(var pengguna in lstPengguna)
+            {
+                context.Pengguna.Add(pengguna);
+            }
+            context.SaveChanges();
+            
         }
     }
 }

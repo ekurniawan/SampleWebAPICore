@@ -14,10 +14,12 @@ namespace SampleWebAPICore.Data
         }
 
         public DbSet<Pasien> Pasien { get; set; }
+        public DbSet<Pengguna> Pengguna { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Pasien>().ToTable("Pasien");
+            modelBuilder.Entity<Pengguna>().ToTable("Pengguna");
         }
 
     }
