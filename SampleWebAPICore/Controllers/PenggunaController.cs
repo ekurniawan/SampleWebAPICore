@@ -5,18 +5,47 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using SampleWebAPICore.Models;
+using SampleWebAPICore.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace SampleWebAPICore.Controllers
 {
     [Produces("application/json")]
     [Route("api/Pengguna")]
     public class PenggunaController : Controller
     {
+        private readonly PasienDataContext context;
+
+        public PenggunaController(PasienDataContext context)
+        {
+            this.context = context;
+        }
+
+        [Route("Login")]
+        [HttpPost]
+        public async Task<bool> Login(Pengguna pengguna)
+        {
+            var result = await (from p in context.Pengguna
+                          where p.Username == pengguna.Username
+                          select p).AsNoTracking().SingleOrDefaultAsync();
+
+            if (result != null)
+            {
+                var isValid = BCrypt.Net.BCrypt.Verify(pengguna.Password, result.Password);
+                return isValid;
+            }
+            return false;
+        }
+
         // GET: api/Pengguna
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
+
+       
 
         // GET: api/Pengguna/5
         [HttpGet("{id}", Name = "Get")]
