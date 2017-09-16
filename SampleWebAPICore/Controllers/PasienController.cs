@@ -60,8 +60,8 @@ namespace SampleWebAPICore.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]Pasien pasien)
         {
             var result = await (from p in context.Pasien
-                         where p.PasienID == id
-                         select p).SingleOrDefaultAsync();
+                                where p.PasienID == id
+                                select p).SingleOrDefaultAsync();
 
             if (result != null)
             {
@@ -88,8 +88,8 @@ namespace SampleWebAPICore.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await (from p in context.Pasien
-                         where p.PasienID == id
-                         select p).SingleOrDefaultAsync();
+                                where p.PasienID == id
+                                select p).SingleOrDefaultAsync();
 
             if (result != null)
             {
@@ -108,11 +108,15 @@ namespace SampleWebAPICore.Controllers
             return BadRequest("Data tidak ditemukan");
         }
 
-        /*[HttpGet]
-        [Route("GetPasien")]
-        public IEnumerable<Pasien> GetPasien()
+        [HttpGet("{nama}")]
+        [Route("GetPasienByNama")]
+        public async Task<IEnumerable<Pasien>> GetPasienByNama(string nama)
         {
-            return lstPasien;
-        }*/
+            var results = from p in context.Pasien
+                          where p.Nama.Contains(nama)
+                          select p;
+
+            return await results.AsNoTracking().ToListAsync();
+        }
     }
 }
